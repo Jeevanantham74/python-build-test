@@ -1,18 +1,13 @@
 pipeline {
-    agent any
+    agent {
+        label ''
+    }
 
     stages {
 
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: pipeline {
-    agent any
-
-    stages {
-
-        stage('Checkout') {
-            steps {
+                echo 'Stage 1: Checking out Python Build Test project...'
                 git branch: 'main',
                     url: 'https://github.com/Jeevanantham74/python-build-test.git'
             }
@@ -20,29 +15,15 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'pip install -r requirements.txt'
+                echo 'Stage 2: Installing dependencies...'
+                bat 'py -m pip install -r requirements.txt'
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                bat 'pytest test_app.py'
-            }
-        }
-    }
-}
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                bat 'pip install -r requirements.txt'
-            }
-        }
-
-        stage('Run Unit Tests') {
-            steps {
-                bat 'pytest test_app.py'
+                echo 'Stage 3: Running unit tests...'
+                bat 'py -m pytest test_app.py -v'
             }
         }
     }
